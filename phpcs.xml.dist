@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+	The ruleset the security job in .github/workflows/security.yml runs, and the
+	one `composer phpcs` runs locally, so a finding is the same in both places.
+
+	It is deliberately not the whole WordPress standard. The style half of that
+	standard (statement alignment, snake_case variables, file names matching
+	class names) disagrees with how this plugin is written throughout, and a gate
+	that reports a hundred formatting notes on every push stops being read. What
+	is checked here is the part a gate is worth having for: escaping and
+	sanitizing, nonces and capabilities, prepared SQL, disabled and discouraged
+	WordPress functions, silenced errors, prefixed globals, and use of anything
+	newer than the PHP version the plugin declares.
+-->
+<ruleset name="TitleSparks">
+	<description>Security, WordPress API use and PHP compatibility for TitleSparks.</description>
+
+	<file>titlesparks.php</file>
+	<file>uninstall.php</file>
+	<file>includes</file>
+
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="ps"/>
+	<arg name="parallel" value="8"/>
+
+	<!-- The plugin header declares WordPress 6.6 and PHP 7.4 as its floor. -->
+	<config name="minimum_supported_wp_version" value="6.6"/>
+	<config name="testVersion" value="7.4-"/>
+
+	<!--
+		Escaping on output, sanitizing on input, nonce and capability checks on
+		anything that acts, and file handling that refuses the dangerous paths.
+	-->
+	<rule ref="WordPress.Security"/>
+
+	<!-- Prepared statements, and no hand-built SQL. -->
+	<rule ref="WordPress.DB"/>
+
+	<!-- Discouraged and deprecated WordPress functions, and direct filesystem or
+		HTTP calls where the WordPress API exists. -->
+	<rule ref="WordPress.WP"/>
+
+	<!-- Silenced errors, loose comparisons that matter, and eval-like calls.
+		POSIXFunctions is dropped from that group: WordPressCS deprecated it in
+		3.3, it warns on every run, and PHPCompatibility below covers the same
+		ground. -->
+	<rule ref="WordPress.PHP">
+		<exclude name="WordPress.PHP.POSIXFunctions"/>
+	</rule>
+
+	<!-- Options, transients, globals and handles the plugin registers carry its
+		prefix, which is what keeps it from colliding with another plugin. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals"/>
+
+	<!-- Nothing newer than PHP 7.4 while that is the declared minimum, and
+		nothing removed before the PHP running the check. -->
+	<rule ref="PHPCompatibilityWP"/>
+</ruleset>

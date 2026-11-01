@@ -1,0 +1,79 @@
+name: Plugin Check
+
+# WordPress.org's own review tooling, run against the file a site actually
+# installs rather than against this tree. The distributable is what the review
+# team reads: `build-*` is not tracked, `blocks/` and `doc/` are not shipped, and
+# a finding that only exists in a source file nobody installs is a finding this
+# gate should not spend a build on.
+#
+# The plugin directory is unpacked under its real slug (`titlesparks`) because
+# Plugin Check reads the expected text domain from that name: a copy unpacked as
+# `titlesparks-dist` reports every translated string as a mismatch and buries
+# the findings that are real.
+#
+# Errors and warnings both fail the job. A warning from Plugin Check is a
+# finding the review team raises anyway — an unsanitised value, a discouraged
+# function, a readme that promises something the code does not do — and a gate
+# that prints one without stopping the build is a gate that gets skimmed. The
+# repository's own baseline lives in `phpcs.xml.dist`; this is the stricter,
+# WordPress.org-facing list, so the input is named here rather than left to the
+# action's default.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One check per ref at a time: a second push supersedes the first, and the
+# report that matters is the one for the newest commit.
+concurrency:
+  group: plugin-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plugin-check:
+    name: Plugin Check on the installable zip
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      # The bundles are build output, so the zip cannot exist until they do.
+      # `npm ci` installs exactly the committed lockfile, which is what every
+      # other workflow here uses.
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build every bundle
+        run: npm run build
+
+      - name: Build the installable plugin zip
+        run: npm run plugin-zip
+
+      # Plugin Check reads a directory, so the zip is unpacked first. This also
+      # proves the archive is what the action checked: the same file a site
+      # downloads from the release.
+      - name: Unpack the distributable
+        run: |
+          mkdir -p tmp-build
+          unzip -q titlesparks.zip -d tmp-build
+          ls -la tmp-build/titlesparks
+
+      - name: Run Plugin Check
+        uses: WordPress/plugin-check-action@v1.1.9
+        with:
+          build-dir: './tmp-build/titlesparks'
+          slug: 'titlesparks'
+          ignore-warnings: 'false'

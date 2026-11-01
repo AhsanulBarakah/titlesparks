@@ -1,0 +1,19 @@
+node_modules/
+build-admin/
+build-block/
+build-frontend/
+*.zip
+
+# Written beside titlesparks.zip by the release workflow, never committed.
+*.zip.sha1
+*.zip.sha256
+*.zip.md5
+
+# The WordPress `tests/integration/setup-test-site.sh` installs locally.
+.test-site/
+
+# Coding-standard tooling, installed for `vendor/bin/phpcs`; the plugin ships no
+# composer.json of its own — see doc/testing-and-tooling.md.
+composer.json
+composer.lock
+vendor/

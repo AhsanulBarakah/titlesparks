@@ -1,0 +1,1726 @@
+# Copyright (C) 2026 AhsanulBarakah
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: TitleSparks 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/titlesparks\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-11-02T00:30:03+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: titlesparks\n"
+
+#. Plugin Name of the plugin
+#: titlesparks.php
+#: includes/admin/class-ts-settings-page.php:84
+#: includes/admin/class-ts-settings-page.php:85
+#: includes/traits/trait-ts-security.php:176
+#: blocks/admin/Dashboard.js:264
+#: blocks/sidebar/index.js:42
+#: blocks/sidebar/sidebar.js:242
+msgid "TitleSparks"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: titlesparks.php
+msgid "https://github.com/AhsanulBarakah/titlesparks"
+msgstr ""
+
+#. Description of the plugin
+#: titlesparks.php
+msgid "Attach customizable animated GIFs, icons and images to post titles and let each one expire through a three stage timeline."
+msgstr ""
+
+#. Author of the plugin
+#: titlesparks.php
+msgid "AhsanulBarakah"
+msgstr ""
+
+#. Author URI of the plugin
+#: titlesparks.php
+msgid "https://profiles.wordpress.org/ahsanulbarakah/"
+msgstr ""
+
+#. translators: %s: the npm command, wrapped in a <code> element.
+#: includes/admin/class-ts-block-assets.php:97
+#, php-format
+msgid "TitleSparks: the editor bundle is missing. Run %s in the plugin directory."
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:66
+msgid "Title Icon Decay Timeline"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:97
+msgid "Show a decaying icon on this post title"
+msgstr ""
+
+#. translators: %d: stage number.
+#: includes/admin/class-ts-meta-box.php:112
+#, php-format
+msgid "Stage %d"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:119
+msgid "Icon"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:121
+#: blocks/shared/constants.js:1217
+msgid "— None —"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:131
+#: blocks/admin/Guide.js:170
+#: blocks/shared/StageEditor.js:442
+msgid "Position"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:147
+msgid "Lasts for"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:157
+msgid "Unit"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:167
+#: blocks/shared/StageEditor.js:95
+msgid "Icon size"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:173
+msgid "From the asset, e.g. 24px"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:181
+msgid "After stage 3 ends"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:188
+msgid "Keep the last icon forever"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:189
+msgid "Remove the icon"
+msgstr ""
+
+#: includes/admin/class-ts-meta-box.php:198
+msgid "The countdown starts where the plugin settings say the timeline starts — the post date by default. Save the post to apply."
+msgstr ""
+
+#: includes/admin/class-ts-settings-page.php:183
+#: blocks/admin/Dashboard.js:102
+#: blocks/sidebar/sidebar.js:267
+msgid "Settings"
+msgstr ""
+
+#: includes/admin/class-ts-settings-page.php:196
+msgid "You are not allowed to manage these settings."
+msgstr ""
+
+#: includes/admin/class-ts-settings-page.php:253
+msgid "Loading the settings interface…"
+msgstr ""
+
+#. translators: %s: the npm command, wrapped in a <code> element.
+#: includes/admin/class-ts-settings-page.php:445
+#, php-format
+msgid "TitleSparks: the admin bundle is missing. Run %s in the plugin directory."
+msgstr ""
+
+#: includes/class-ts-decay.php:338
+msgid "Expired — no icon is shown."
+msgstr ""
+
+#. translators: %d: stage number.
+#: includes/class-ts-decay.php:343
+#, php-format
+msgid "Stage %d is shown permanently."
+msgstr ""
+
+#. translators: 1: stage number, 2: human readable time difference.
+#: includes/class-ts-decay.php:348
+#, php-format
+msgid "Stage %1$d — changes in %2$s."
+msgstr ""
+
+#: includes/class-ts-post-meta.php:84
+msgid "Three stage title icon decay timeline, stored as JSON."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:60
+msgid "Full settings payload."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:121
+msgid "One folder: a name and the tags it collects."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:169
+msgid "Unsaved timeline to preview."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:223
+#: includes/traits/trait-ts-security.php:161
+msgid "You are not allowed to edit this post."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:240
+#: includes/traits/trait-ts-security.php:128
+msgid "You are not allowed to manage TitleSparks settings."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:301
+#: blocks/admin/useLibrary.js:129
+msgid "Homepage sections rescanned."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:325
+#: blocks/admin/useLibrary.js:159
+msgid "Settings saved."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:348
+msgid "A folder needs a name."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:357
+#: blocks/admin/useLibrary.js:308
+msgid "Folder saved."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:377
+msgid "That folder does not exist."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:385
+#: blocks/admin/useLibrary.js:339
+msgid "Folder removed."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:409
+msgid "You are not allowed to use that media attachment."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:422
+msgid "That media attachment cannot be used as an image."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:435
+msgid "An asset needs both an image URL and a name."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:445
+msgid "Asset saved."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:463
+msgid "That asset does not exist."
+msgstr ""
+
+#: includes/class-ts-rest-controller.php:471
+#: blocks/admin/useLibrary.js:279
+msgid "Asset removed."
+msgstr ""
+
+#: includes/class-ts-settings.php:453
+msgid "Main Featured"
+msgstr ""
+
+#: includes/class-ts-settings.php:459
+msgid "Featured Posts"
+msgstr ""
+
+#: includes/class-ts-settings.php:465
+msgid "Latest Post"
+msgstr ""
+
+#: includes/class-ts-settings.php:471
+msgid "Other Story"
+msgstr ""
+
+#: includes/class-ts-settings.php:477
+msgid "Popular Categories"
+msgstr ""
+
+#: includes/class-ts-settings.php:844
+msgid "Front page"
+msgstr ""
+
+#. translators: %s: template part slug, for example "sidebar".
+#: includes/class-ts-settings.php:878
+#, php-format
+msgid "Template part: %s"
+msgstr ""
+
+#: includes/class-ts-settings.php:971
+msgid "Front page template"
+msgstr ""
+
+#: includes/class-ts-settings.php:972
+msgid "Posts page template"
+msgstr ""
+
+#: includes/class-ts-settings.php:973
+msgid "Blog template"
+msgstr ""
+
+#: includes/class-ts-settings.php:974
+#: includes/class-ts-settings.php:975
+msgid "Single post template"
+msgstr ""
+
+#: includes/class-ts-settings.php:976
+msgid "Page template"
+msgstr ""
+
+#: includes/class-ts-settings.php:977
+msgid "Archive template"
+msgstr ""
+
+#: includes/class-ts-settings.php:978
+msgid "Category template"
+msgstr ""
+
+#: includes/class-ts-settings.php:979
+msgid "Tag template"
+msgstr ""
+
+#: includes/class-ts-settings.php:980
+msgid "Author template"
+msgstr ""
+
+#: includes/class-ts-settings.php:981
+msgid "Search results template"
+msgstr ""
+
+#: includes/class-ts-settings.php:982
+msgid "404 template"
+msgstr ""
+
+#: includes/class-ts-settings.php:983
+msgid "sidebar"
+msgstr ""
+
+#: includes/class-ts-settings.php:984
+msgid "footer"
+msgstr ""
+
+#: includes/class-ts-settings.php:985
+msgid "header"
+msgstr ""
+
+#: includes/class-ts-settings.php:999
+msgid "Template"
+msgstr ""
+
+#. translators: 1: post type singular name, 2: item title.
+#: includes/class-ts-settings.php:1105
+#, php-format
+msgid "%1$s: %2$s"
+msgstr ""
+
+#. translators: 1: widget name, 2: the widget instance ID, e.g. block-7.
+#: includes/class-ts-settings.php:1646
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#: includes/class-ts-settings.php:1928
+msgid "Block"
+msgstr ""
+
+#: includes/class-ts-still-image-editor.php:63
+msgid "The first frame of this GIF could not be read."
+msgstr ""
+
+#: includes/class-ts-title-renderer.php:724
+msgid "News status icon"
+msgstr ""
+
+#: includes/traits/trait-ts-security.php:81
+msgid "The security check failed. Please reload the page and try again."
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:63
+msgid "Folder name"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:64
+msgid "Two folders with the same name are the same folder."
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:78
+msgid "Tags this folder collects"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:79
+msgid "An asset joins this folder as soon as it carries one of these tags. A folder with no tags is empty."
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:143
+msgid "Folders"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:144
+msgid "Group the library by tag. An icon joins every folder that watches one of its tags."
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:159
+msgid "New"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:181
+msgid "All assets"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:284
+msgid "No tags yet — this folder is empty."
+msgstr ""
+
+#. translators: %s: folder name.
+#. translators: %s: asset name.
+#: blocks/admin/AssetFolders.js:295
+#: blocks/admin/AssetLibrarySection.js:470
+#, js-format
+msgid "Edit %s"
+msgstr ""
+
+#. translators: %s: folder name.
+#. translators: %s: asset name.
+#: blocks/admin/AssetFolders.js:307
+#: blocks/admin/AssetLibrarySection.js:493
+#, js-format
+msgid "Delete %s"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:323
+msgid "No folders yet. Create one and name the tags it collects."
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:336
+msgid "Edit folder"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:337
+msgid "New folder"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:339
+msgid "Assets are matched to a folder by tag, so nothing has to be filed by hand."
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:350
+#: blocks/admin/AssetFolders.js:386
+#: blocks/admin/AssetLibrarySection.js:553
+#: blocks/admin/AssetLibrarySection.js:586
+#: blocks/shared/AssetPickerModal.js:77
+msgid "Cancel"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:361
+msgid "Save folder"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:362
+msgid "Create folder"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:378
+msgid "Delete folder"
+msgstr ""
+
+#: blocks/admin/AssetFolders.js:395
+msgid "Delete"
+msgstr ""
+
+#. translators: %s: folder name.
+#: blocks/admin/AssetFolders.js:403
+#, js-format
+msgid "Delete the “%s” folder? Its assets and their tags stay in the library — only the folder goes."
+msgstr ""
+
+#. translators: %d: number of assets in the folder.
+#: blocks/admin/AssetFolders.js:413
+#, js-format
+msgid "%d asset is in it right now."
+msgid_plural "%d assets are in it right now."
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/admin/AssetLibrarySection.js:84
+#: blocks/admin/Guide.js:386
+msgid "Label"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:85
+msgid "Used in the picker and as alt text."
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:99
+msgid "Tags"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:100
+msgid "Folders collect assets by tag, so a tag here is what puts this asset in a folder."
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:113
+#: blocks/admin/AssetLibrarySection.js:125
+msgid "Display size"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:114
+msgid "A stage can override this in the editor."
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:134
+msgid "Display size unit"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:246
+msgid "Global Asset Library"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:247
+msgid "GIFs, icons and images every post can use."
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:262
+msgid "Add New Asset"
+msgstr ""
+
+#. translators: %s: folder name.
+#: blocks/admin/AssetLibrarySection.js:271
+#, js-format
+msgid "Folder: %s"
+msgstr ""
+
+#. translators: %d: number of assets in the folder.
+#: blocks/admin/AssetLibrarySection.js:278
+#, js-format
+msgid "%d asset"
+msgid_plural "%d assets"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: comma separated tag list.
+#: blocks/admin/AssetLibrarySection.js:290
+#, js-format
+msgid "tagged %s"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:299
+msgid "Show all"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:307
+msgid "Filtered by tag:"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:316
+msgid "Clear tag filter"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:344
+msgid "Search assets by name or tag…"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:348
+#: blocks/shared/AssetPickerModal.js:99
+msgid "Search assets"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:369
+#: blocks/shared/constants.js:1228
+msgid "All"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:397
+msgid "Nothing in this folder yet — give an asset one of its tags."
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:401
+msgid "No assets yet — add a GIF, icon or image."
+msgstr ""
+
+#. translators: 1: first asset shown, 2: last asset shown, 3: total assets.
+#: blocks/admin/AssetLibrarySection.js:516
+#, js-format
+msgid "Showing %1$d–%2$d of %3$d"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:525
+msgid "filtered"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:541
+msgid "Edit asset"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:542
+msgid "The image itself is managed in the WordPress media library."
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:562
+msgid "Save asset"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:578
+msgid "Remove asset"
+msgstr ""
+
+#: blocks/admin/AssetLibrarySection.js:595
+#: blocks/admin/DefaultSettings.js:837
+#: blocks/shared/StageEditor.js:616
+msgid "Remove"
+msgstr ""
+
+#. translators: %s: asset name.
+#: blocks/admin/AssetLibrarySection.js:603
+#, js-format
+msgid "Remove “%s” from the library? Posts using it will stop showing an icon for that stage."
+msgstr ""
+
+#: blocks/admin/Dashboard.js:107
+msgid "Library"
+msgstr ""
+
+#: blocks/admin/Dashboard.js:111
+#: blocks/sidebar/sidebar.js:250
+msgid "Guide"
+msgstr ""
+
+#: blocks/admin/Dashboard.js:280
+msgid "Unsaved changes"
+msgstr ""
+
+#: blocks/admin/Dashboard.js:281
+msgid "All changes saved"
+msgstr ""
+
+#: blocks/admin/Dashboard.js:292
+msgid "Save"
+msgstr ""
+
+#: blocks/admin/Dashboard.js:320
+msgid "The WordPress media uploader is unavailable on this screen."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:75
+#: blocks/admin/DefaultSettings.js:412
+msgid "Homepage"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:76
+msgid "Post and page content"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:77
+msgid "Archives"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:78
+#: blocks/admin/DefaultSettings.js:423
+#: blocks/shared/constants.js:695
+msgid "Search results"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:79
+msgid "Every page"
+msgstr ""
+
+#. translators: 1: the active theme's name, 2: the name of the theme it is built on.
+#: blocks/admin/DefaultSettings.js:322
+#, js-format
+msgid "Active theme: %1$s, a child of %2$s."
+msgstr ""
+
+#. translators: %s: the active theme's name.
+#: blocks/admin/DefaultSettings.js:328
+#, js-format
+msgid "Active theme: %s."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:335
+msgid "Default Settings"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:336
+msgid "These settings will be used for new posts unless overridden in the block editor."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:345
+msgid "Enable TitleSparks"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:348
+msgid "Post titles only show a decaying icon while this is on."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:368
+#: blocks/admin/Guide.js:419
+msgid "Post types"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:391
+msgid "Show icons on"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:394
+msgid "Choose which page types may show icons beside post titles, including featured sections on listing pages."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:408
+msgid "Post pages"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:416
+msgid "Archives and categories"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:449
+msgid "Theme areas and widgets"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:454
+msgid "Choose which areas can show icons. The scan reads your theme templates, your posts and pages, and your widgets, so a section says which pages it appears on."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:472
+msgid "Deep scan"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:479
+msgid "Theme areas"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:523
+msgid "Widgets"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:531
+msgid "Appears in"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:567
+msgid "No theme areas or widgets were found yet. Add a widget, or put a post-list block on a post, a page or your front page, then choose Deep scan."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:576
+msgid "Timeline starts"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:597
+msgid "Date and time the timeline starts"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:609
+msgid "Every post counts its timeline from this moment unless it sets its own. Written as site time."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:619
+msgid "Default Position"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:631
+#: blocks/admin/DefaultSettings.js:635
+#: blocks/sidebar/sidebar.js:353
+msgid "Icon lines up with"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:647
+msgid "This decides where the X and Y offsets start from, on every icon. With the first line, a title that wraps to two or three lines keeps the icon exactly where you placed it."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:659
+#: blocks/admin/DefaultSettings.js:663
+#: blocks/sidebar/sidebar.js:379
+msgid "Space beside the icon"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:678
+msgid "This is the space every icon uses unless its own post chooses another. Flush drops both the gap and the small-icon centring, so the icon’s own edge touches the last character."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:695
+#: blocks/admin/DefaultSettings.js:706
+msgid "Respect reduced motion"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:712
+msgid "An animated GIF cannot be paused with CSS. On draws a still frame of that GIF for any reader whose system asks for less motion; off keeps the animation for everyone. Only animated GIFs are affected, and every other icon is drawn exactly as before."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:721
+#: blocks/admin/DefaultSettings.js:738
+msgid "Fit icons inside tight cards"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:744
+msgid "Only affects icons inside a card — a widget or homepage section — whose edge hides what leaves it. On draws an icon that would be cut off at a smaller size, down to 8px, so it fits; off draws the icon exactly where you placed it and leaves the card edge to your theme. The title’s words never move either way, and a post’s own title is never affected."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:757
+msgid "Title size → icon size"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:763
+#: blocks/shared/StageEditor.js:542
+msgid "Title size (px)"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:766
+#: blocks/shared/StageEditor.js:548
+msgid "Icon size (px)"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:769
+#: blocks/shared/StageEditor.js:554
+msgid "Remove size"
+msgstr ""
+
+#. translators: %d: row number in the size table.
+#: blocks/admin/DefaultSettings.js:787
+#, js-format
+msgid "Size %d title font size in pixels"
+msgstr ""
+
+#. translators: %d: row number in the size table.
+#: blocks/admin/DefaultSettings.js:807
+#, js-format
+msgid "Size %d icon size in pixels"
+msgstr ""
+
+#. translators: %d: row number in the size table.
+#: blocks/admin/DefaultSettings.js:827
+#, js-format
+msgid "Remove size %d"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:852
+#: blocks/shared/StageEditor.js:631
+msgid "Add size"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:857
+msgid "Each row sets the icon size for titles from that title size up to the next row — 12 and 10, 16 and 12: a 14px title gets a 10px icon, a 16px title 12px. A title smaller than every row uses the first, one larger than the last uses the last. An empty cell is dropped when you save. Each stage in the post editor can set its own table instead."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:869
+#: blocks/admin/DefaultSettings.js:875
+msgid "Icon stacking order"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:892
+msgid "This is the icon’s z-index. 0 is the page’s normal order, which is what every icon has had so far. A higher number draws the icon in front of anything your theme stacks at a lower number; a negative one puts it behind. It applies in the editor and on your site alike."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:904
+msgid "The dates above are counted from your timeline start."
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:908
+msgid "The dates above are counted from now. A new post counts from its own publish date, so only the lengths are saved."
+msgstr ""
+
+#. translators: %d: stage number.
+#: blocks/admin/DefaultSettings.js:935
+#, js-format
+msgid "Stage %d icon ends"
+msgstr ""
+
+#. translators: %d: stage number.
+#: blocks/admin/DefaultSettings.js:946
+#, js-format
+msgid "Date and time stage %d ends"
+msgstr ""
+
+#. translators: 1: how long the stage lasts, 2: its start and end.
+#: blocks/admin/DefaultSettings.js:961
+#, js-format
+msgid "%1$s · %2$s"
+msgstr ""
+
+#: blocks/admin/DefaultSettings.js:977
+msgid "Final Action (Stage 3)"
+msgstr ""
+
+#: blocks/admin/Guide.js:73
+msgid "How it works"
+msgstr ""
+
+#: blocks/admin/Guide.js:76
+msgid "Each title shows one icon at a time. The icon changes as the post ages, then stops or stays, depending on your settings."
+msgstr ""
+
+#: blocks/admin/Guide.js:92
+msgid "Initial icon"
+msgstr ""
+
+#: blocks/admin/Guide.js:93
+msgid "Mid icon"
+msgstr ""
+
+#: blocks/admin/Guide.js:95
+msgid "Final icon, then your choice"
+msgstr ""
+
+#: blocks/admin/Guide.js:106
+msgid "Stages"
+msgstr ""
+
+#: blocks/admin/Guide.js:107
+msgid "Stages run one after another, never at the same time."
+msgstr ""
+
+#: blocks/admin/Guide.js:112
+msgid "End of a stage"
+msgstr ""
+
+#: blocks/admin/Guide.js:113
+msgid "Each stage ends on the date and time you pick in the editor. That is also its length, measured from where the stage starts."
+msgstr ""
+
+#: blocks/admin/Guide.js:118
+msgid "Skipping a stage"
+msgstr ""
+
+#: blocks/admin/Guide.js:119
+msgid "Clear the End field. The stage then ends when the one before it does, so nothing shows it — a way to use two icons instead of three."
+msgstr ""
+
+#: blocks/admin/Guide.js:124
+msgid "Times"
+msgstr ""
+
+#: blocks/admin/Guide.js:125
+msgid "Every date and time is the site’s clock, not the visitor’s. A post published in Lagos changes at the same moment everywhere."
+msgstr ""
+
+#: blocks/admin/Guide.js:130
+#: blocks/shared/StageEditor.js:750
+msgid "After stage 3"
+msgstr ""
+
+#: blocks/admin/Guide.js:131
+msgid "Keep the last icon that has one, or remove the icon entirely."
+msgstr ""
+
+#: blocks/admin/Guide.js:139
+msgid "Where a timeline starts"
+msgstr ""
+
+#: blocks/admin/Guide.js:140
+msgid "One choice for the whole site, on the Settings tab."
+msgstr ""
+
+#: blocks/admin/Guide.js:146
+msgid "The post’s publish date"
+msgstr ""
+
+#: blocks/admin/Guide.js:148
+msgid "The default. A post published at 09:00 starts counting at 09:00."
+msgstr ""
+
+#: blocks/admin/Guide.js:154
+msgid "A date and time you choose"
+msgstr ""
+
+#: blocks/admin/Guide.js:156
+msgid "Every post counts from the same moment, whatever its publish date. Useful for a launch or an event."
+msgstr ""
+
+#: blocks/admin/Guide.js:161
+msgid "A post that keeps its own"
+msgstr ""
+
+#: blocks/admin/Guide.js:162
+msgid "A post saved before this setting existed keeps the anchor it has, so its timeline does not jump."
+msgstr ""
+
+#: blocks/admin/Guide.js:171
+msgid "Where the icon sits against the title."
+msgstr ""
+
+#: blocks/admin/Guide.js:176
+msgid "Left or right"
+msgstr ""
+
+#: blocks/admin/Guide.js:177
+msgid "The icon sits to the left or right of the title. The offset fields move it anywhere from there, including above or below."
+msgstr ""
+
+#: blocks/admin/Guide.js:183
+msgid "Offset is space, not coordinates"
+msgstr ""
+
+#: blocks/admin/Guide.js:188
+msgid "A positive X moves the icon right and a positive Y moves it down; negative values move it left and up. Both fields work the same way on either side."
+msgstr ""
+
+#: blocks/admin/Guide.js:193
+msgid "Per position"
+msgstr ""
+
+#: blocks/admin/Guide.js:194
+msgid "An offset belongs to the position, so all three stages that use that position share it. Reset returns it to the placement the position’s name promises."
+msgstr ""
+
+#: blocks/admin/Guide.js:199
+msgid "Facing the other way"
+msgstr ""
+
+#: blocks/admin/Guide.js:200
+msgid "Some icons — an arrow, a hand, a face — point one way. Every stage has a Flip horizontally checkbox that mirrors that stage’s icon, in the editor and on your site, without changing the library asset or any other stage."
+msgstr ""
+
+#: blocks/admin/Guide.js:208
+msgid "Editor and your site"
+msgstr ""
+
+#: blocks/admin/Guide.js:209
+msgid "Why the same icon can look slightly different in the two places."
+msgstr ""
+
+#: blocks/admin/Guide.js:214
+msgid "Measured, not assumed"
+msgstr ""
+
+#: blocks/admin/Guide.js:215
+msgid "The icon is placed by measuring the title’s real text on the page it is drawn on, so your theme’s font, weight and size decide the gap. A theme cannot move the icon wrongly, because nothing about it is guessed in advance."
+msgstr ""
+
+#: blocks/admin/Guide.js:221
+msgid "The preview may look different"
+msgstr ""
+
+#: blocks/admin/Guide.js:226
+msgid "The block editor draws the title in your theme’s own type only when the theme shares its styles with the editor. When it does not, the canvas uses the editor’s font and size instead. The icon keeps its place on the letters as the title changes size, so a nudge means the same thing in both — but the letters themselves are drawn differently, and no setting can change that: the published page shows your theme’s type."
+msgstr ""
+
+#: blocks/admin/Guide.js:232
+msgid "When there is no room beside the title"
+msgstr ""
+
+#: blocks/admin/Guide.js:237
+msgid "The icon stands beside the title in the space your theme leaves around the heading. A card in a widget owns that space instead, and may cut off whatever leaves it. Settings → Fit icons inside tight cards decides whether a card draws an icon smaller so it fits, or leaves it exactly as you placed it."
+msgstr ""
+
+#: blocks/admin/Guide.js:243
+msgid "In front of your theme’s layers"
+msgstr ""
+
+#: blocks/admin/Guide.js:248
+msgid "The icon is drawn above the title’s words already. If your theme stacks its own elements over the heading — a ribbon, a badge, a hover overlay — Settings → Icon stacking order decides where the icon belongs among them. 0 is the page’s normal order, a higher number brings it forward and a negative one sends it behind; the editor and your site use the same number."
+msgstr ""
+
+#: blocks/admin/Guide.js:254
+msgid "Offsets grow with the title"
+msgstr ""
+
+#: blocks/admin/Guide.js:256
+msgid "An offset is a distance on the title, so it is measured against the title’s font size — like the gap, and like the letters the icon sits over. A nudge you settle on in the editor is the same part of the same letter on the page, whichever size your theme draws the title at there."
+msgstr ""
+
+#: blocks/admin/Guide.js:261
+msgid "Titles that wrap"
+msgstr ""
+
+#: blocks/admin/Guide.js:262
+msgid "A title that wraps onto a second or third line is measured again, so the icon keeps the place you gave it. By default it is anchored to the first line: your X and Y count from that line, a side icon sits beside that line’s own words rather than beyond the longest line in the title, and adding lines below it leaves the icon where it is. Settings → Icon lines up with also offers **Last line of the title**, which counts from the end of the words and puts a side icon after that line’s last word, and **Middle of the whole title**, which centres the icon on all the lines together and measures a side icon from the widest line."
+msgstr ""
+
+#: blocks/admin/Guide.js:267
+msgid "Measured again by itself"
+msgstr ""
+
+#: blocks/admin/Guide.js:268
+msgid "Placement is measured once your fonts load, when the window is resized and whenever the page changes, so a title that reflows puts the icon back without you doing anything."
+msgstr ""
+
+#: blocks/admin/Guide.js:276
+msgid "An icon inside a card"
+msgstr ""
+
+#: blocks/admin/Guide.js:277
+msgid "What happens when a widget card is narrower than the icon."
+msgstr ""
+
+#: blocks/admin/Guide.js:283
+msgid "Cards have no room to give"
+msgstr ""
+
+#: blocks/admin/Guide.js:285
+msgid "A post title may use the space your theme leaves beside it, but a card in a sidebar list or a slider does not own that space. Some themes cut off whatever leaves a card; the theme measured here does not, so an icon that cannot fit simply reaches past the edge. Either way the room beside the words is limited, which is why this setting exists."
+msgstr ""
+
+#: blocks/admin/Guide.js:291
+msgid "Off leaves the icon exactly as it is"
+msgstr ""
+
+#: blocks/admin/Guide.js:296
+msgid "With the switch off, nothing is resized: the icon keeps the size and offset you set, in every card. If the card is narrower than the icon and its gap, the icon reaches past the card edge, and your theme decides whether that part is shown."
+msgstr ""
+
+#: blocks/admin/Guide.js:302
+msgid "On fits the icon inside the card"
+msgstr ""
+
+#: blocks/admin/Guide.js:307
+msgid "With the switch on, an icon the card would cut off is drawn smaller, down to 8px, so it fits inside the card. The title is not touched: its words stay on the same line and are never indented, so the text keeps its full width. An icon is never hidden, and a card too narrow even for the smallest icon is left to clip. A post’s own title is not a card, so it keeps the page’s space whichever way the switch is set."
+msgstr ""
+
+#: blocks/admin/Guide.js:315
+#: blocks/shared/StageEditor.js:221
+msgid "Size"
+msgstr ""
+
+#: blocks/admin/Guide.js:316
+msgid "How large the icon is drawn."
+msgstr ""
+
+#: blocks/admin/Guide.js:321
+msgid "Per stage"
+msgstr ""
+
+#: blocks/admin/Guide.js:322
+msgid "Sidebar → Size. A later stage can be bigger or smaller than the one before it."
+msgstr ""
+
+#: blocks/admin/Guide.js:328
+msgid "Empty means the asset’s size"
+msgstr ""
+
+#: blocks/admin/Guide.js:333
+msgid "Leave Size blank to use the size set on the asset itself, shown beside the field. Typing a number overrides it for that stage only."
+msgstr ""
+
+#: blocks/admin/Guide.js:338
+msgid "Units"
+msgstr ""
+
+#. translators: %s: the default icon size, e.g. 20px.
+#: blocks/admin/Guide.js:341
+#, js-format
+msgid "px, em, rem or %%. The default is %s. em sizes scale with the title, which keeps the icon in proportion as the heading grows."
+msgstr ""
+
+#: blocks/admin/Guide.js:349
+msgid "Following the title’s size"
+msgstr ""
+
+#: blocks/admin/Guide.js:354
+msgid "On a stage, choose Advanced (custom sizes) and the icon is sized from a table of title sizes and icon sizes, which appears only once you choose it: each row sets the icon size for titles from that title size up to the next row, so rows of 32 → 32 and 40 → 45 draw a 32px icon beside every title from 32px to 39px and a 45px one from 40px up. A title smaller than every row uses the first row’s icon, a larger one uses the last. The table starts from a copy of the site’s numbers under Settings → Title size → icon size, and editing one gives this stage its own table. A stage set to a fixed size keeps its own size instead."
+msgstr ""
+
+#: blocks/admin/Guide.js:359
+msgid "Resizing keeps its place"
+msgstr ""
+
+#: blocks/admin/Guide.js:360
+msgid "The icon stays centred on the title’s line and keeps its own space, so a size change never draws it over the words. Up to 20px it grows and shrinks about its middle; larger icons grow away from the title. It looks the same in the editor, in this sidebar’s preview, on your site and in widget titles such as the Posts Slider."
+msgstr ""
+
+#: blocks/admin/Guide.js:368
+msgid "Assets"
+msgstr ""
+
+#: blocks/admin/Guide.js:369
+msgid "GIFs, icons and images shared by every post."
+msgstr ""
+
+#: blocks/admin/Guide.js:374
+msgid "Add assets"
+msgstr ""
+
+#: blocks/admin/Guide.js:375
+msgid "The Asset Library tab uploads through the WordPress media library, so files live where your other images do."
+msgstr ""
+
+#: blocks/admin/Guide.js:380
+msgid "Where to find GIFs"
+msgstr ""
+
+#: blocks/admin/Guide.js:381
+msgid "Free icons and animated GIFs can be found on Pixabay (https://pixabay.com/). Download one there, then upload it here."
+msgstr ""
+
+#: blocks/admin/Guide.js:387
+msgid "Names the asset in the picker and is read out as the icon’s alt text."
+msgstr ""
+
+#: blocks/admin/Guide.js:392
+msgid "Removing one"
+msgstr ""
+
+#: blocks/admin/Guide.js:393
+msgid "A stage whose asset is gone shows no icon until you pick another."
+msgstr ""
+
+#: blocks/admin/Guide.js:401
+msgid "Defaults"
+msgstr ""
+
+#: blocks/admin/Guide.js:402
+msgid "What a new post starts from."
+msgstr ""
+
+#: blocks/admin/Guide.js:407
+msgid "Set on the Settings tab"
+msgstr ""
+
+#: blocks/admin/Guide.js:408
+msgid "Position, durations and the final action are copied into a new post. Every value stays editable in the editor."
+msgstr ""
+
+#: blocks/admin/Guide.js:413
+msgid "Entered as end dates"
+msgstr ""
+
+#: blocks/admin/Guide.js:414
+msgid "The defaults use the same calendar and time picker the editor does, and are saved as lengths, because a post that does not exist yet has no date of its own to count from."
+msgstr ""
+
+#: blocks/admin/Guide.js:420
+msgid "Titles only get icons on the post types you tick."
+msgstr ""
+
+#: blocks/admin/Guide.js:433
+msgid "Back to settings"
+msgstr ""
+
+#: blocks/admin/InfoCards.js:24
+#: blocks/shared/StageEditor.js:66
+msgid "Initial Icon"
+msgstr ""
+
+#: blocks/admin/InfoCards.js:25
+msgid "Stage 1 shows the freshest marker, for example an animated “News” GIF."
+msgstr ""
+
+#: blocks/admin/InfoCards.js:31
+#: blocks/shared/StageEditor.js:67
+msgid "Mid Icon"
+msgstr ""
+
+#: blocks/admin/InfoCards.js:32
+msgid "Stage 2 swaps to a second icon, for example “Hot News Today”."
+msgstr ""
+
+#: blocks/admin/InfoCards.js:38
+#: blocks/shared/StageEditor.js:68
+msgid "Final Icon"
+msgstr ""
+
+#: blocks/admin/InfoCards.js:39
+msgid "Stage 3 shows the last icon, or removes it entirely, per your settings."
+msgstr ""
+
+#: blocks/admin/InfoCards.js:58
+msgid "How It Works"
+msgstr ""
+
+#: blocks/admin/InfoCards.js:59
+msgid "Each post title carries its own timeline."
+msgstr ""
+
+#: blocks/admin/InfoCards.js:95
+msgid "Need Help?"
+msgstr ""
+
+#: blocks/admin/InfoCards.js:100
+msgid "Stages, placement, sizes and the timeline start, explained."
+msgstr ""
+
+#: blocks/admin/InfoCards.js:111
+msgid "Open the Guide"
+msgstr ""
+
+#: blocks/admin/useLibrary.js:104
+msgid "Could not load the library."
+msgstr ""
+
+#: blocks/admin/useLibrary.js:136
+msgid "Could not scan the homepage sections."
+msgstr ""
+
+#: blocks/admin/useLibrary.js:166
+msgid "Could not save the settings."
+msgstr ""
+
+#. translators: %d: number of assets added.
+#: blocks/admin/useLibrary.js:212
+#, js-format
+msgid "%d asset added."
+msgid_plural "%d assets added."
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/admin/useLibrary.js:224
+msgid "Could not add the asset."
+msgstr ""
+
+#: blocks/admin/useLibrary.js:246
+msgid "Asset updated."
+msgstr ""
+
+#: blocks/admin/useLibrary.js:252
+msgid "Could not update the asset."
+msgstr ""
+
+#: blocks/admin/useLibrary.js:285
+msgid "Could not remove the asset."
+msgstr ""
+
+#: blocks/admin/useLibrary.js:314
+msgid "Could not save the folder."
+msgstr ""
+
+#: blocks/admin/useLibrary.js:345
+msgid "Could not remove the folder."
+msgstr ""
+
+#: blocks/shared/AssetPickerModal.js:24
+msgid "Image"
+msgstr ""
+
+#: blocks/shared/AssetPickerModal.js:68
+msgid "Asset Library"
+msgstr ""
+
+#: blocks/shared/AssetPickerModal.js:69
+msgid "Select an asset from your global library."
+msgstr ""
+
+#: blocks/shared/AssetPickerModal.js:84
+msgid "Select"
+msgstr ""
+
+#: blocks/shared/AssetPickerModal.js:98
+msgid "Search assets…"
+msgstr ""
+
+#: blocks/shared/AssetPickerModal.js:106
+msgid "No assets match this filter yet."
+msgstr ""
+
+#. translators: %d: number of assets shown.
+#: blocks/shared/AssetPickerModal.js:148
+#, js-format
+msgid "Showing %d assets"
+msgstr ""
+
+#: blocks/shared/constants.js:63
+msgid "Left of title"
+msgstr ""
+
+#: blocks/shared/constants.js:64
+msgid "Right of title"
+msgstr ""
+
+#: blocks/shared/constants.js:172
+msgid "right"
+msgstr ""
+
+#: blocks/shared/constants.js:173
+msgid "down"
+msgstr ""
+
+#. translators: 1: direction the horizontal field moves the icon, 2: direction the vertical field moves it.
+#: blocks/shared/constants.js:216
+#, js-format
+msgid "Plus moves it %1$s / %2$s, minus the other way."
+msgstr ""
+
+#: blocks/shared/constants.js:219
+msgid "It is measured at the editor’s title size and keeps its place as the title changes size on the page."
+msgstr ""
+
+#: blocks/shared/constants.js:229
+msgid "Days"
+msgstr ""
+
+#: blocks/shared/constants.js:230
+msgid "Hours"
+msgstr ""
+
+#: blocks/shared/constants.js:231
+msgid "Minutes"
+msgstr ""
+
+#: blocks/shared/constants.js:242
+msgid "The post's publish date"
+msgstr ""
+
+#: blocks/shared/constants.js:246
+msgid "A date and time I choose"
+msgstr ""
+
+#: blocks/shared/constants.js:263
+msgid "px"
+msgstr ""
+
+#: blocks/shared/constants.js:264
+msgid "em"
+msgstr ""
+
+#: blocks/shared/constants.js:265
+msgid "rem"
+msgstr ""
+
+#: blocks/shared/constants.js:266
+msgid "%"
+msgstr ""
+
+#: blocks/shared/constants.js:357
+msgid "Keep Icon Permanently"
+msgstr ""
+
+#: blocks/shared/constants.js:358
+msgid "Disappear Completely"
+msgstr ""
+
+#: blocks/shared/constants.js:392
+msgid "Leave the icon exactly as it is"
+msgstr ""
+
+#: blocks/shared/constants.js:394
+msgid "Nothing is resized. The icon keeps the size and offset you set, and the card edge is left to your theme — most themes show the part that sticks out."
+msgstr ""
+
+#: blocks/shared/constants.js:400
+msgid "Shrink the icon to fit the card"
+msgstr ""
+
+#: blocks/shared/constants.js:402
+msgid "An icon that a card would cut off is drawn smaller, down to 8px, so it fits inside. The title keeps its line length and its words never move."
+msgstr ""
+
+#: blocks/shared/constants.js:450
+msgid "First line of the title"
+msgstr ""
+
+#: blocks/shared/constants.js:452
+msgid "The icon stays on the first line, so Y moves it from that line however many lines the title takes. This is what you set the offset against."
+msgstr ""
+
+#: blocks/shared/constants.js:458
+msgid "Last line of the title"
+msgstr ""
+
+#: blocks/shared/constants.js:460
+msgid "The icon stays on the last line, so Y counts from the bottom line of a wrapped title — and a side icon sits after that line’s last word. The end of the words rather than their start."
+msgstr ""
+
+#: blocks/shared/constants.js:466
+msgid "Middle of the whole title"
+msgstr ""
+
+#: blocks/shared/constants.js:468
+msgid "The icon is centred on all of the lines together, so Y counts from the middle of the paragraph and a wrapped title pushes the icon down."
+msgstr ""
+
+#: blocks/shared/constants.js:507
+msgid "Standard gap"
+msgstr ""
+
+#: blocks/shared/constants.js:509
+msgid "Leaves the usual space between the icon and the words, a fraction of the title’s own size."
+msgstr ""
+
+#: blocks/shared/constants.js:515
+msgid "Flush against the words"
+msgstr ""
+
+#: blocks/shared/constants.js:517
+msgid "Puts the icon’s own edge against the last character, with no space between them."
+msgstr ""
+
+#: blocks/shared/constants.js:683
+#: blocks/sidebar/sidebar.js:362
+#: blocks/sidebar/sidebar.js:388
+msgid "Use site setting"
+msgstr ""
+
+#: blocks/shared/constants.js:684
+msgid "Show"
+msgstr ""
+
+#: blocks/shared/constants.js:685
+msgid "Hide"
+msgstr ""
+
+#: blocks/shared/constants.js:689
+msgid "Post page title"
+msgstr ""
+
+#: blocks/shared/constants.js:691
+msgid "Homepage listings and sliders"
+msgstr ""
+
+#: blocks/shared/constants.js:694
+msgid "Archive/category listings"
+msgstr ""
+
+#: blocks/shared/constants.js:927
+msgid "No stage is active yet."
+msgstr ""
+
+#. translators: %d: number of days.
+#: blocks/shared/constants.js:939
+#, js-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of hours.
+#: blocks/shared/constants.js:949
+#, js-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of minutes.
+#: blocks/shared/constants.js:961
+#, js-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: blocks/shared/constants.js:1229
+msgid "GIFs"
+msgstr ""
+
+#: blocks/shared/constants.js:1230
+msgid "Icons"
+msgstr ""
+
+#: blocks/shared/constants.js:1231
+msgid "Images"
+msgstr ""
+
+#: blocks/shared/constants.js:1436
+msgid "No icon: this stage ends when the stage before it does."
+msgstr ""
+
+#. translators: 1: stage start date and time, 2: stage end date and time.
+#: blocks/shared/constants.js:1444
+#, js-format
+msgid "%1$s → %2$s"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:86
+msgid "Fixed size"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:88
+msgid "Advanced (custom sizes)"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:94
+msgid "GIF size"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:96
+msgid "Image size"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:415
+msgid "Change"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:416
+msgid "Select icon"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:457
+msgid "Flip horizontally"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:466
+msgid "Ends"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:479
+#: blocks/shared/StageEditor.js:487
+msgid "Duration"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:517
+msgid "Sizing mode"
+msgstr ""
+
+#. translators: %d: stage number.
+#: blocks/shared/StageEditor.js:526
+#, js-format
+msgid "Stage %d icon sizing mode"
+msgstr ""
+
+#. translators: 1: stage number, 2: row number in the size table.
+#: blocks/shared/StageEditor.js:572
+#, js-format
+msgid "Stage %1$d size %2$d title font size in pixels"
+msgstr ""
+
+#. translators: 1: stage number, 2: row number in the size table.
+#: blocks/shared/StageEditor.js:590
+#, js-format
+msgid "Stage %1$d size %2$d icon size in pixels"
+msgstr ""
+
+#. translators: 1: stage number, 2: row number in the size table.
+#: blocks/shared/StageEditor.js:607
+#, js-format
+msgid "Remove stage %1$d size %2$d"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:637
+msgid "This stage uses its own table. Each row sets the icon size for titles from that title size up to the next row; the first row holds below it and the last above it."
+msgstr ""
+
+#: blocks/shared/StageEditor.js:641
+msgid "These are the site’s sizes; editing one gives this stage a table of its own, which starts as a copy of them. Each row sets the icon size for titles from that title size up to the next row."
+msgstr ""
+
+#: blocks/shared/StageEditor.js:671
+msgid "Icon size unit"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:692
+msgid "Offset"
+msgstr ""
+
+#: blocks/shared/StageEditor.js:710
+msgid "Reset"
+msgstr ""
+
+#: blocks/shared/ui.js:382
+msgid "Library pages"
+msgstr ""
+
+#. translators: %s: tag name.
+#: blocks/shared/ui.js:570
+#, js-format
+msgid "Remove the “%s” tag"
+msgstr ""
+
+#: blocks/shared/ui.js:652
+msgid "Add a tag…"
+msgstr ""
+
+#: blocks/shared/ui.js:667
+msgid "Add"
+msgstr ""
+
+#: blocks/shared/ui.js:674
+msgid "In use:"
+msgstr ""
+
+#: blocks/shared/ui.js:818
+msgid "Dismiss"
+msgstr ""
+
+#: blocks/shared/ui.js:921
+msgid "Close"
+msgstr ""
+
+#: blocks/shared/useMediaFrame.js:57
+msgid "Add an icon or GIF"
+msgstr ""
+
+#: blocks/shared/useMediaFrame.js:58
+msgid "Add to library"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:62
+msgid "Countdown starts from the post publish date"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:73
+msgid "Stages complete"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:75
+msgid "Expired"
+msgstr ""
+
+#. translators: %s: time remaining before the last stage ends.
+#: blocks/sidebar/sidebar.js:81
+#, js-format
+msgid "Stages finish in %s · icon stays"
+msgstr ""
+
+#. translators: %s: time remaining before the icon disappears.
+#: blocks/sidebar/sidebar.js:88
+#, js-format
+msgid "Icon disappears in %s"
+msgstr ""
+
+#. translators: 1: stage number, 2: position, 3: asset name.
+#: blocks/sidebar/sidebar.js:164
+#, js-format
+msgid "On live: stage %1$d · %2$s · %3$s"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:172
+msgid "Nothing live on the title."
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:261
+msgid "Switched off site-wide."
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:277
+msgid "No assets yet."
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:283
+msgid "Add one"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:291
+msgid "Decaying icon"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:346
+msgid "How the icon sits on this title"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:405
+msgid "Only this post’s icon changes; every other post keeps the site setting."
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:415
+msgid "Where to show this post icon"
+msgstr ""
+
+#. translators: %s: homepage section name.
+#: blocks/sidebar/sidebar.js:447
+#, js-format
+msgid "Homepage: %s"
+msgstr ""
+
+#. translators: %s: widget name.
+#: blocks/sidebar/sidebar.js:473
+#, js-format
+msgid "Widget: %s"
+msgstr ""
+
+#: blocks/sidebar/sidebar.js:495
+msgid "Use site setting follows the default; Show or Hide overrides it for this post."
+msgstr ""
+
+#. translators: %s: date and time the last stage ends.
+#: blocks/sidebar/sidebar.js:511
+#, js-format
+msgid "· ends %s"
+msgstr ""

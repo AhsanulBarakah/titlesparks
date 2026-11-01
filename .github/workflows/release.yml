@@ -1,0 +1,317 @@
+name: Release
+
+# Publishing is deliberate, so nothing here runs on a push: this workflow starts
+# only when it is dispatched by hand from Actions → Release → Run workflow.
+# Given the version to ship it builds the same installable plugin ZIP the test
+# job uploads, and attaches it to a `v<version>` release. GitHub adds its own
+# "Source code" archives to every release, so the release carries both the
+# installable ZIP and the source tree.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, without the leading "v" (for example 1.0.0)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Mark the release as a pre-release'
+        required: false
+        default: false
+        type: boolean
+      draft:
+        description: 'Create it as a draft, so it can be reviewed before it is published'
+        required: false
+        default: false
+        type: boolean
+  # A tag pushed by hand is a promise to publish, so the installable ZIP is
+  # attached without a second, manual run: the assets are what a site installs,
+  # and a tag carrying no ZIP is a release nobody can download.
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+# One release per version at a time, and never cancel one that is half-made.
+concurrency:
+  group: release-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build the plugin ZIP and publish the release
+    # Only the dispatched run publishes a version: it checks the header and the
+    # stable tag before building anything, and it writes the release notes. A
+    # tag push goes to the job below, which only attaches the assets.
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run unit tests
+        run: npm run test:unit -- --runInBand
+
+      - name: Build every bundle
+        run: npm run build
+
+      # The plugin header and WordPress's readme stable tag are the two places a
+      # version is written, and a release tagged with a version the plugin does
+      # not carry is a support ticket. Both are checked against the input before
+      # anything is built or published.
+      - name: Check the version the plugin carries
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          header=$(sed -n 's/^ \* Version: *//p' titlesparks.php | head -n1 | tr -d '\r')
+          stable=$(sed -n 's/^Stable tag: *//p' readme.txt | head -n1 | tr -d '\r')
+
+          echo "titlesparks.php: ${header:-<none>}"
+          echo "readme.txt:      ${stable:-<none>}"
+          echo "requested:       $VERSION"
+
+          if [ "$header" != "$VERSION" ] || [ "$stable" != "$VERSION" ]; then
+            echo "Update the Version header and the Stable tag to $VERSION before releasing." >&2
+            exit 1
+          fi
+
+      # A second run for a version that already has a release would either fail
+      # inside `gh` with a less useful message or, worse, look like it worked.
+      - name: Check the tag is free
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            echo "A release for v${VERSION} already exists." >&2
+            exit 1
+          fi
+
+      - name: Build the installable plugin zip
+        run: npm run plugin-zip
+
+      - name: Inspect the zip
+        run: |
+          test -f titlesparks.zip
+          unzip -l titlesparks.zip
+
+      # The format WordPress.org uses for its own downloads: one file per
+      # digest, named after the archive, holding nothing but the hex digest. A
+      # site owner can then check the ZIP they installed against the release
+      # without cloning anything.
+      - name: Write the checksum files
+        run: |
+          sha1sum titlesparks.zip | cut -d' ' -f1 > titlesparks.zip.sha1
+          sha256sum titlesparks.zip | cut -d' ' -f1 > titlesparks.zip.sha256
+          md5sum titlesparks.zip | cut -d' ' -f1 > titlesparks.zip.md5
+
+          for file in titlesparks.zip.sha1 titlesparks.zip.sha256 titlesparks.zip.md5; do
+            echo "${file}: $(cat "$file")"
+          done
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+          PRERELEASE: ${{ inputs.prerelease }}
+          DRAFT: ${{ inputs.draft }}
+        run: |
+          # The two checkboxes arrive as the strings `true` and `false`, so the
+          # flags are built here rather than in an expression nobody can read.
+          flags=()
+
+          if [ "$PRERELEASE" = "true" ]; then flags+=( --prerelease ); fi
+          if [ "$DRAFT" = "true" ]; then flags+=( --draft ); fi
+
+          gh release create "v${VERSION}" \
+            titlesparks.zip \
+            titlesparks.zip.sha1 \
+            titlesparks.zip.sha256 \
+            titlesparks.zip.md5 \
+            --title "v${VERSION}" \
+            --target "$GITHUB_SHA" \
+            "${flags[@]}"
+
+          {
+            echo "Released v${VERSION} from ${GITHUB_SHA}."
+            echo ""
+            echo "| File | sha256 |"
+            echo "| --- | --- |"
+            echo "| titlesparks.zip | \`$(cut -d' ' -f1 titlesparks.zip.sha256)\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Playground runs WordPress in the browser, so a reader can try the plugin
+      # before installing anything: the Query API's `plugin` parameter takes a
+      # URL and installs and activates it, logging them in. The URL is this
+      # release's own asset, so the preview always opens the version the notes
+      # describe rather than whatever is newest. The body is written here after
+      # the release exists rather than passed to `gh release create`, so the
+      # description and this line are assembled in one known order.
+      #
+      # That URL is fetched by the reader's browser with no credentials, so it
+      # resolves only while the repository is public: GitHub answers 404 for a
+      # private repository's release assets, and Playground reports that 404 as
+      # a download failure that blames the reader's connection. The section
+      # therefore follows the payload's visibility — while the repository is
+      # private the notes name the route that does work — installing the ZIP
+      # from inside Playground's own plugin uploader — rather than a link that
+      # cannot download anything.
+      #
+      # What the page says about the release itself comes from
+      # `doc/release-notes/v<version>.md`, a file the repository keeps per
+      # version. Nothing generated is appended to it, and it is kept short —
+      # what the plugin does, and how to try this release — because a release
+      # page that argues at length is read as noise. A version with no notes
+      # file gets a line saying so rather than a page that reads as though the
+      # plugin has no description.
+      - name: Write the release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+          # An empty value means the payload did not say, which is treated as
+          # private: the section that promises no download is the safe default.
+          PRIVATE: ${{ github.event.repository.private }}
+        run: |
+          mkdir -p notes
+
+          cat > notes/preview.js <<'JS'
+          const version = process.env.VERSION;
+          const isPrivate = process.env.PRIVATE !== 'false';
+          const lines = [];
+
+          if ( isPrivate ) {
+          	lines.push(
+          		'## Trying this release',
+          		'',
+          		'This repository is private, so GitHub serves the ZIP attached below only to people signed in with access to it, and a Playground link fetched without those credentials would fail rather than open.',
+          		'',
+          		'Install `titlesparks.zip` from **Plugins → Add New → Upload Plugin** to try it.',
+          		'',
+          		'',
+          	);
+          } else {
+          	const zip = `https://github.com/${ process.env.GITHUB_REPOSITORY }/releases/download/v${ version }/titlesparks.zip`;
+          	const preview = `https://playground.wordpress.net/?${ new URLSearchParams( {
+          		plugin: zip,
+          		url: '/wp-admin/admin.php?page=titlesparks',
+          	} ) }`;
+
+          	lines.push(
+          		'## Try it in your browser',
+          		'',
+          		'[Open v' + version + ' in WordPress Playground](' + preview + ') — a WordPress with this release installed and activated, running in your browser.',
+          		'',
+          		'',
+          	);
+          }
+
+          process.stdout.write( lines.join( '\n' ) );
+          JS
+
+          VERSION="$VERSION" node notes/preview.js > notes/preview.md
+
+          notes_file="doc/release-notes/v${VERSION}.md"
+
+          {
+            if [ -f "$notes_file" ]; then
+              cat "$notes_file"
+              echo
+            else
+              echo "> No notes were written for v${VERSION}. Add \`${notes_file}\`, describing what this release changes."
+              echo
+            fi
+
+            cat notes/preview.md
+          } > notes/full.md
+
+          gh release edit "v${VERSION}" --notes-file notes/full.md
+
+          echo "Payload visibility: '${PRIVATE:-<unset>}' — anything but false publishes the section without a link."
+          echo "Description from: $( [ -f "$notes_file" ] && echo "$notes_file" || echo '<none, and the page says so>' )"
+          head -n 12 notes/full.md
+
+  # The assets for a tag that was pushed rather than dispatched. The dispatched
+  # run above creates its own tag while publishing, so this job also runs for
+  # it and re-uploads the files it just attached; `--clobber` makes that a
+  # no-op instead of a race between two runs of the same version.
+  attach:
+    name: Attach the installable ZIP to the tag's release
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # The zip is the build output plus the PHP, so the bundles are built here
+      # exactly as the dispatched release builds them.
+      - name: Build every bundle
+        run: npm run build
+
+      - name: Build the installable plugin zip
+        run: npm run plugin-zip
+
+      # Playground runs on a newer Node than the build does, and the build's
+      # version is left alone here so the archive this job ships is the one the
+      # tests built, byte for byte.
+      - name: Set up Node.js 22 for Playground
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # The archive is installed on a clean WordPress before it is attached:
+      # Playground runs a WordPress in WASM with SQLite, so the ZIP goes in
+      # exactly as a site would put it, activation included, and the settings
+      # screen is rendered and checked. Every other test here ran against the
+      # build tree; this is the only one that runs against the file a site
+      # downloads, and it fails the tag rather than the site that installed it.
+      - name: Install the ZIP on a clean WordPress
+        run: bash tests/integration/playground-fresh-install.sh titlesparks.zip
+
+      # The same one-file-per-digest format WordPress.org publishes, so a site
+      # owner can check what they installed against this release.
+      - name: Write the checksum files
+        run: |
+          sha1sum titlesparks.zip | cut -d' ' -f1 > titlesparks.zip.sha1
+          sha256sum titlesparks.zip | cut -d' ' -f1 > titlesparks.zip.sha256
+          md5sum titlesparks.zip | cut -d' ' -f1 > titlesparks.zip.md5
+
+      - name: Attach the ZIP to the release for this tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          # A tag with no release yet gets one, so the assets have somewhere to
+          # live; a release the dispatched run already made is used as it is and
+          # only its attachments are refreshed.
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release ${TAG} exists; attaching the build."
+          else
+            gh release create "$TAG" --verify-tag --title "$TAG" --generate-notes
+          fi
+
+          gh release upload "$TAG" \
+            titlesparks.zip \
+            titlesparks.zip.sha1 \
+            titlesparks.zip.sha256 \
+            titlesparks.zip.md5 \
+            --clobber

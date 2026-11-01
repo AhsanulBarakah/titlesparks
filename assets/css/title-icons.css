@@ -1,0 +1,110 @@
+/**
+ * Front end title icons.
+ *
+ * These are the icon's own size and the gap it carries in text flow, before
+ * the script places it. Nothing here forces the theme's presentation: the site
+ * remains free to restyle the icon's colours, borders, padding, background,
+ * shadow, display and margins, and no declaration is forced.
+ *
+ * Script-positioned icons are measured against the title's text and placed
+ * with their own coordinates, so the flow margins below do not apply to them.
+ */
+
+.titlesparks-icon {
+	/* The editor's gap: `ICON_GAP_EM` in blocks/shared/editorTitleDom.js.
+	   Font-relative on purpose, so the space between the icon and the words is
+	   the same in the editor, on the front end and at any zoom — including on
+	   the small titles in widgets and cards, where a pixel floor would hold the
+	   gap still while the letters kept shrinking. */
+	--titlesparks-gap: 0.15em;
+}
+
+.titlesparks-icon__img {
+	/* The icon element is the one place a size is written; repeating it here
+	   would make a percentage size resolve against the icon's own width, so a
+	   `24%` icon drew its image at 24% of 24%. */
+	width: 100%;
+	height: auto;
+}
+
+/* A stage can mirror its icon horizontally, for an asset that faces the wrong
+   way. The mirror is on the image, so it cannot disturb the icon element's own
+   placement transform. Ordinary CSS: a theme may override it. */
+.titlesparks-icon--flipped .titlesparks-icon__img {
+	transform: scaleX(-1);
+}
+
+/* A positioned icon is the picture and nothing else. A block image removes the
+   line box's descent from the icon's height, so placement centres on the
+   picture rather than on a line of text. The extra class also outranks a
+   theme's broad `... img { display: none }` rule, which is written for
+   thumbnails and hid this icon in a small-screen previous/next block; a theme
+   can still override this rule deliberately.
+
+   The size is repeated here for the same reason. A theme's previous/next
+   thumbnail rule lands on this image too: the reference theme writes
+   `:is(.nav-previous, .nav-next) img { width: 80px; height: 80px;
+   object-fit: cover }`, which outranks `.titlesparks-icon__img`. The theme's
+   own `img { max-width: 100% }` then capped that width against the icon's
+   placed box while the height was left alone, so an icon sized to 20px drew
+   20x80 — four times its own height, cropped — and the size mode looked
+   ignored. The width is the one the placement chose; the height follows it. */
+.titlesparks-icon[class*="titlesparks-icon--"] .titlesparks-icon__img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+/* Icons that stay in text flow — inline widget icons and the editor preview —
+   need a box of their own so the chosen width applies. This is ordinary CSS
+   the site can override. */
+.titlesparks-icon--inline,
+.titlesparks-icon--flow {
+	display: inline-block;
+}
+
+/* One gap for every position, for the moment before the script places the
+   icon: `left` and `top` come before the text and space it with a trailing
+   margin, `right` and `bottom` come after it and space it with a leading one.
+   Once placed, the icon is measured against the text and the script sets the
+   gap itself. Ordinary declarations: a theme is free to override them. */
+.titlesparks-icon--inline.titlesparks-icon--left,
+.titlesparks-icon--flow.titlesparks-icon--left {
+	margin-right: var( --titlesparks-gap );
+}
+
+.titlesparks-icon--inline.titlesparks-icon--left-top,
+.titlesparks-icon--flow.titlesparks-icon--left-top {
+	margin-right: var( --titlesparks-gap );
+}
+
+.titlesparks-icon--inline.titlesparks-icon--left-bottom,
+.titlesparks-icon--flow.titlesparks-icon--left-bottom {
+	margin-right: var( --titlesparks-gap );
+}
+
+.titlesparks-icon--inline.titlesparks-icon--right,
+.titlesparks-icon--flow.titlesparks-icon--right {
+	margin-left: var( --titlesparks-gap );
+}
+
+.titlesparks-icon--inline.titlesparks-icon--right-top,
+.titlesparks-icon--flow.titlesparks-icon--right-top {
+	margin-left: var( --titlesparks-gap );
+}
+
+.titlesparks-icon--inline.titlesparks-icon--right-bottom,
+.titlesparks-icon--flow.titlesparks-icon--right-bottom {
+	margin-left: var( --titlesparks-gap );
+}
+
+/* Top / bottom icons sit above or below the title text. */
+.titlesparks-icon--inline.titlesparks-icon--top,
+.titlesparks-icon--flow.titlesparks-icon--top {
+	margin-bottom: var( --titlesparks-gap );
+}
+
+.titlesparks-icon--inline.titlesparks-icon--bottom,
+.titlesparks-icon--flow.titlesparks-icon--bottom {
+	margin-top: var( --titlesparks-gap );
+}

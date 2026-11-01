@@ -1,0 +1,75 @@
+/**
+ * Tailwind entry.
+ *
+ * Tailwind v4 is imported without its `base` layer, because that layer carries
+ * preflight, Tailwind's global reset, which would restyle wp-admin and every
+ * other plugin on the page. WordPress already provides the base styles.
+ *
+ * IMPORTANT — no cascade layers
+ * -----------------------------
+ * The layer argument is what v4's docs encourage (`layer(utilities)`), and it
+ * is wrong here: **unlayered CSS beats layered CSS**, whatever the
+ * specificity. wp-admin ships its own unlayered `select`, `input` and `button`
+ * rules, so a layered utility lost to them and every control fell back to
+ * WordPress' 2px corners and grey border while its class list still said
+ * `titlesparks:rounded-lg`. Importing the layers without `layer(…)` puts the
+ * utilities back in the same origin as the page's rules, where the
+ * `.titlesparks-app` scope and the utility's specificity decide — which is the
+ * whole point of the scope.
+ *
+ * Every generated class is written as a variant — `titlesparks:flex`,
+ * `titlesparks:hover:bg-brand-50` — because that is where v4 keeps the prefix.
+ * `tailwind.config.js` still supplies the theme and the `.titlesparks-app`
+ * scope, so a utility can only ever style an element inside the plugin's own
+ * root: the built rule reads `.titlesparks-app .titlesparks\:flex`.
+ *
+ * IMPORTANT — the `--tw-*` properties
+ * -----------------------------------
+ * Every v4 utility is composed from document-level custom properties
+ * (`--tw-shadow`, `--tw-ring-shadow`, …) that v4 registers with `@property`,
+ * and a registration is global to the page. They are not written here: the
+ * build renames them to `--titlesparks-tw-*` in
+ * `bin/scope-tailwind-properties.js`, so this stylesheet still writes nothing
+ * outside its own namespace and cannot collide with another Tailwind sheet on
+ * the same screen.
+ *
+ * IMPORTANT — the border reset, scoped
+ * -----------------------------------
+ * The base layer also carries the border reset (`border-width: 0`,
+ * `border-style: solid`), and `titlesparks:border` is only a width. Without
+ * that reset a `titlesparks:border` hairline on anything but a form control
+ * lands on the browser's initial `border-style: none` and paints nothing at
+ * all — the card, the checkbox and the dashed drop zone all came out
+ * borderless.
+ *
+ * The border reset is therefore shipped, scoped to the plugin's own tree rather
+ * than to the document. It is unlayered like the utilities and loses to them on
+ * specificity — the scope plus the class is (0,2,0) against this (0,1,0) — so a
+ * `titlesparks:border-*` still decides what is drawn; it only fills in the
+ * style for the elements wp-admin does not describe.
+ *
+ * `:where()` would read as the tidier scope, and is exactly what must not be
+ * used here: it would drop the selector to (0,0,0) and wp-admin's
+ * `button { border: 2px outset }` would win the width back. A plain class plus
+ * `*` is (0,1,0), which outranks an element rule and still ties with — so stays
+ * behind — the page's own skeleton classes, which are written after this sheet
+ * in the document.
+ *
+ * The reset is written after the imports, and sits behind the utilities on
+ * specificity rather than on order.
+ */
+
+@import "tailwindcss/theme.css" prefix(titlesparks);
+@import "tailwindcss/utilities.css" prefix(titlesparks);
+@config "../../tailwind.config.js";
+@source "../../blocks";
+
+/* Unlayered on purpose: a layered reset would lose to wp-admin's own unlayered
+   `button { border: 2px outset }`. It still loses to the utilities, which carry
+   `.titlesparks-app` plus the class — (0,2,0) against this (0,1,0). */
+.titlesparks-app *,
+.titlesparks-app *::before,
+.titlesparks-app *::after {
+	border-width: 0;
+	border-style: solid;
+}

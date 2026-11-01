@@ -1,0 +1,45 @@
+# Files and folders excluded from a distributed copy of the plugin.
+#
+# `npm run plugin-zip` builds its archive from the `files` list in
+# `package.json`, so these entries are a second, independent guard: they keep a
+# development-only file out of any other packaging path too (wp dist-archive,
+# SVN or deploy actions that honour .distignore).
+
+.git
+.github
+.gitignore
+.distignore
+.phpcs.cache
+node_modules
+vendor
+bin
+tests
+blocks
+doc
+build
+coverage
+package.json
+package-lock.json
+AGENTS.md
+README.md
+blueprint.json
+.stylelintrc.json
+babel.config.js
+eslint.config.cjs
+jest.config.js
+jsconfig.json
+postcss.config.js
+tailwind.config.js
+webpack.config.js
+.gitattributes
+phpcs.xml
+phpcs.xml.dist
+artifacts-*.png
+screenshot-*.png
+demo.gif
+demo.mp4
+demo.webm
+*.zip
+*.log
+.DS_Store
+Thumbs.db

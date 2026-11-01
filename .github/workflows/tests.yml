@@ -1,0 +1,521 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  javascript:
+    name: Unit tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # `npm ci` installs exactly the committed lockfile instead of resolving
+      # the ranges afresh. A fresh resolution crashed on the runner with
+      # "Cannot read properties of null (reading 'edgesOut')" (npm 10.8.2, the
+      # npm bundled with Node 20), which is npm's peer-dependency resolution
+      # failing on this tree rather than anything wrong with the packages.
+      # The lockfile also makes CI installs reproducible and much faster, and
+      # it is the install path `doc/release-and-maintenance.md` documents.
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Run unit tests
+        run: npm run test:unit -- --runInBand
+
+      - name: Build every bundle
+        run: npm run build
+
+      - name: Build the installable plugin zip
+        run: npm run plugin-zip
+
+      - name: Upload the plugin zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: titlesparks-plugin
+          path: titlesparks.zip
+          if-no-files-found: error
+
+  # The assertion scripts in `tests/php` each load a real WordPress and read the
+  # stored option, the REST routes and the deep scan. Nothing ran them — no
+  # workflow, no documented command — so they were one refactor away from
+  # silently rotting. They need neither the bundles nor a browser: every build
+  # manifest read is on an enqueue hook, and the helper falls back to the
+  # sources when one is missing, so the seeded site alone is enough.
+  php-assertions:
+    name: PHP assertions against WordPress
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: titlesparks
+          MARIADB_USER: titlesparks
+          MARIADB_PASSWORD: titlesparks
+          MARIADB_ROOT_PASSWORD: titlesparks-root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=30
+    env:
+      DB_HOST: 127.0.0.1:3306
+      DB_NAME: titlesparks
+      DB_USER: titlesparks
+      DB_PASSWORD: titlesparks
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, curl, dom, json, mysqli, zip, gd
+          coverage: none
+
+      - name: Install and seed WordPress
+        run: bash tests/integration/setup-test-site.sh
+
+      - name: Run the assertion scripts
+        run: php tests/php/run.php .test-site
+
+  # The browser checks drive a real WordPress, not just this tree: some measure
+  # the page a reader gets, one the editor canvas, one the editor's sidebar and
+  # the settings dashboard. They used to need a test site the runner could reach
+  # plus an admin login in repository settings, which made them opt-in — skipped
+  # on every push, so the run was green without having measured anything. The
+  # site is installed on the runner instead (`tests/integration/setup-test-site.sh`),
+  # so they run everywhere and need no variables or secrets.
+  #
+  # The service container is the only part CI has to provide: WordPress needs a
+  # database before it will start.
+  frontend-icons:
+    name: Front-end icons at phone and desktop width
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: titlesparks
+          MARIADB_USER: titlesparks
+          MARIADB_PASSWORD: titlesparks
+          MARIADB_ROOT_PASSWORD: titlesparks-root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=30
+    env:
+      DB_HOST: 127.0.0.1:3306
+      DB_NAME: titlesparks
+      DB_USER: titlesparks
+      DB_PASSWORD: titlesparks
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, curl, dom, json, mysqli, zip, gd
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # The site serves the built plugin, so the check measures the bundles the
+      # zip ships rather than the sources.
+      - name: Build the bundles
+        run: npm run build
+
+      # Playwright arrives with the toolchain the integration checks already use
+      # (`@wordpress/scripts` depends on `@playwright/test`); the browser itself
+      # is downloaded here, because a runner has no Google Chrome installed.
+      - name: Install the browser the check drives
+        run: npx playwright install --with-deps chromium
+
+      - name: Install and seed WordPress
+        run: bash tests/integration/setup-test-site.sh
+
+      # PHP's built-in server is single-threaded, and a page asks for dozens of
+      # files at once; the workers keep those from queueing behind each other.
+      - name: Serve the site
+        run: |
+          PHP_CLI_SERVER_WORKERS=8 php -S 127.0.0.1:8080 -t .test-site >/tmp/php-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$TITLESPARKS_TEST_POST_URL" || true)
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/php-server.log
+          echo "The test site never answered." >&2
+          exit 1
+
+      - name: Check the icons hold their place
+        env:
+          TITLESPARKS_TEST_VIEWPORTS: 390x844,1440x900
+        run: node tests/integration/frontend-icon-stability.cjs
+
+  # The two links at the foot of a post, each naming the post published next to
+  # it. They are inline links inside a `nav` — no heading and no title class —
+  # which makes them the occurrence a heading-preferring rule loses, and losing
+  # them is invisible on the page itself: every card below them still carries an
+  # icon. The fixture publishes a post on either side of the one under test,
+  # each with a live stage of its own, so the links have something to carry.
+  frontend-adjacent-links:
+    name: Front-end icons on previous/next links
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: titlesparks
+          MARIADB_USER: titlesparks
+          MARIADB_PASSWORD: titlesparks
+          MARIADB_ROOT_PASSWORD: titlesparks-root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=30
+    env:
+      DB_HOST: 127.0.0.1:3306
+      DB_NAME: titlesparks
+      DB_USER: titlesparks
+      DB_PASSWORD: titlesparks
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, curl, dom, json, mysqli, zip, gd
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # The page serves the built plugin, so the check measures the bundle the
+      # zip ships rather than the sources.
+      - name: Build the bundles
+        run: npm run build
+
+      - name: Install the browser the check drives
+        run: npx playwright install --with-deps chromium
+
+      - name: Install and seed WordPress
+        run: bash tests/integration/setup-test-site.sh
+
+      - name: Serve the site
+        run: |
+          PHP_CLI_SERVER_WORKERS=8 php -S 127.0.0.1:8080 -t .test-site >/tmp/php-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$TITLESPARKS_TEST_POST_URL" || true)
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/php-server.log
+          echo "The test site never answered." >&2
+          exit 1
+
+      - name: Check the icons on the adjacent links
+        run: node tests/integration/adjacent-post-icons.cjs
+
+  # The same page, with its title rewritten in flight into the shapes a theme
+  # can use — a custom element, a heading wrapper, a link, a card, a widget —
+  # so the icon placement is measured on each rather than only on the stock
+  # heading. The fixture is the live page's own markup with the title element
+  # swapped, so the bundle, the stylesheet and the icon all come from the site.
+  frontend-title-elements:
+    name: Front-end icons on theme title elements
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: titlesparks
+          MARIADB_USER: titlesparks
+          MARIADB_PASSWORD: titlesparks
+          MARIADB_ROOT_PASSWORD: titlesparks-root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=30
+    env:
+      DB_HOST: 127.0.0.1:3306
+      DB_NAME: titlesparks
+      DB_USER: titlesparks
+      DB_PASSWORD: titlesparks
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, curl, dom, json, mysqli, zip, gd
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      # The check reads `build-frontend/index.js` and the stylesheet from this
+      # tree and compares their URLs against the page, so the bundles have to
+      # be the ones the site serves.
+      - name: Build the bundles
+        run: npm run build
+
+      - name: Install the browser the check drives
+        run: npx playwright install --with-deps chromium
+
+      - name: Install and seed WordPress
+        run: bash tests/integration/setup-test-site.sh
+
+      - name: Serve the site
+        run: |
+          PHP_CLI_SERVER_WORKERS=8 php -S 127.0.0.1:8080 -t .test-site >/tmp/php-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$TITLESPARKS_TEST_POST_URL" || true)
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/php-server.log
+          echo "The test site never answered." >&2
+          exit 1
+
+      - name: Check the icon on every title element
+        run: node tests/integration/non-heading-post-title.cjs
+
+      # The page a cache keeps. The fixture post's timeline ended before the
+      # check runs, and its icon still travels in the HTML, so this proves the
+      # browser — not the server — is what stops drawing an expired icon.
+      - name: Check an expired timeline on a cached page
+        run: node tests/integration/expired-timeline-cache.cjs
+
+  # The same site, measured in the editor. A phone width is where the title is
+  # smallest and a reserved padding beside the icon is easiest to miss.
+  editor-canvas-phone:
+    name: Editor canvas at phone width
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: titlesparks
+          MARIADB_USER: titlesparks
+          MARIADB_PASSWORD: titlesparks
+          MARIADB_ROOT_PASSWORD: titlesparks-root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=30
+    env:
+      DB_HOST: 127.0.0.1:3306
+      DB_NAME: titlesparks
+      DB_USER: titlesparks
+      DB_PASSWORD: titlesparks
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, curl, dom, json, mysqli, zip, gd
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build the bundles
+        run: npm run build
+
+      - name: Install the browser the check drives
+        run: npx playwright install --with-deps chromium
+
+      - name: Install and seed WordPress
+        run: bash tests/integration/setup-test-site.sh
+
+      # The block editor loads its own scripts, the REST API and the media
+      # library in parallel, so the extra workers matter more here than on the
+      # front end.
+      - name: Serve the site
+        run: |
+          PHP_CLI_SERVER_WORKERS=8 php -S 127.0.0.1:8080 -t .test-site >/tmp/php-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$TITLESPARKS_TEST_EDITOR_URL" || true)
+            if [ "$code" = "200" ] || [ "$code" = "302" ]; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/php-server.log
+          echo "The test site never answered." >&2
+          exit 1
+
+      - name: Check the canvas at phone width
+        env:
+          TITLESPARKS_TEST_VIEWPORTS: 390x844
+        run: node tests/integration/editor-title-left-space.cjs
+
+  # The two admin screens, on the same seeded site and the same login. This is
+  # the check a stylesheet build cannot make on its own: it opens the block
+  # editor's TitleSparks sidebar and the settings dashboard, then asserts the
+  # panel still fits its 280px home and the Tailwind scale still resolves to
+  # pixels there. The block editor sets `html { font-size: 10px }`, so a `rem`
+  # that slipped back into the built CSS would shrink the panel's text instead
+  # of failing a unit test.
+  admin-panels:
+    name: Editor sidebar and settings dashboard
+    runs-on: ubuntu-latest
+    services:
+      database:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: titlesparks
+          MARIADB_USER: titlesparks
+          MARIADB_PASSWORD: titlesparks
+          MARIADB_ROOT_PASSWORD: titlesparks-root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=30
+    env:
+      DB_HOST: 127.0.0.1:3306
+      DB_NAME: titlesparks
+      DB_USER: titlesparks
+      DB_PASSWORD: titlesparks
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, curl, dom, json, mysqli, zip, gd
+          coverage: none
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build the bundles
+        run: npm run build
+
+      - name: Install the browser the check drives
+        run: npx playwright install --with-deps chromium
+
+      - name: Install and seed WordPress
+        run: bash tests/integration/setup-test-site.sh
+
+      # Opening the editor pulls in its scripts, the REST API and the plugin's
+      # sidebar bundle at once; the extra workers keep those from queueing.
+      - name: Serve the site
+        run: |
+          PHP_CLI_SERVER_WORKERS=8 php -S 127.0.0.1:8080 -t .test-site >/tmp/php-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$TITLESPARKS_TEST_EDITOR_URL" || true)
+            if [ "$code" = "200" ] || [ "$code" = "302" ]; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/php-server.log
+          echo "The test site never answered." >&2
+          exit 1
+
+      - name: Check the sidebar and the dashboard
+        run: node tests/integration/editor-sidebar-layout.cjs
+
+      # The settings screen's own chrome, on the same site and the same login.
+      # The placeholder and the menu icon's rule used to be style elements the
+      # plugin printed; this opens the real screen with the bundle blocked (so
+      # the placeholder is still there to measure) and reads what the enqueue
+      # API handed the browser at both widths.
+      - name: Check the settings screen chrome
+        run: node tests/integration/admin-chrome.cjs
+
+  php-syntax:
+    name: PHP syntax (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '7.4', '8.2' ]
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Lint every PHP file
+        run: |
+          find . -name '*.php' \
+            -not -path './node_modules/*' \
+            -not -path './vendor/*' \
+            -print0 |
+          xargs -0 -n1 -r php -l

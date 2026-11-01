@@ -1,0 +1,21 @@
+{
+	"extends": "@wordpress/stylelint-config/scss-stylistic",
+	"rules": {
+		"selector-class-pattern": null,
+		"scss/at-rule-no-unknown": [
+			true,
+			{
+				"ignoreAtRules": [
+					"apply",
+					"config",
+					"custom-variant",
+					"reference",
+					"source",
+					"theme",
+					"utility",
+					"variant"
+				]
+			}
+		]
+	}
+}

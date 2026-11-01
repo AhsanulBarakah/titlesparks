@@ -1,0 +1,50 @@
+== Changelog ==
+
+= 1.0.0 =
+
+Initial release.
+
+Features
+
+* A global asset library for images, icons and animated GIFs, with tags,
+  folders, search and type filters.
+* A three stage expiration timeline on each supported post, with a duration and
+  unit for every stage.
+* A live icon beside the real post title in the block editor, plus a classic
+  editor meta box for sites that use the old editor.
+* Every copy of a post's title gets the icon: the post page, archive and
+  homepage cards, a sidebar's latest-posts list, a related-stories rail, and the
+  previous and next links at the foot of a post, each carrying the icon of the
+  post it points to.
+* Title-following icon sizing, so an icon can follow the heading size it sits
+  next to: your own table of title sizes and icon sizes, with a site-wide table
+  and a per-stage override in the post editor.
+* Per stage position offsets and horizontal mirroring.
+* Per post overrides for how the icon sits on its own title: which line it is
+  measured from, and whether it keeps the usual space beside the words or is
+  drawn flush against them. The space also has a site-wide default, which a post
+  follows until it chooses its own answer.
+* Separate display switches for post pages, the homepage, archives and search
+  results, plus per post overrides for each of them.
+* Icon switches for every theme area the deep scan finds, and for every active
+  widget instance.
+* A still frame for readers who prefer reduced motion: an animated GIF is drawn
+  as a single frame for a visitor whose system asks for less motion. On by
+  default.
+* Complete cleanup on uninstall: the settings, every post's timeline and the
+  plugin's own still frames are removed, while the images in the Media Library
+  are kept.
+* A settings screen for supported post types, default stages and timeline
+  behaviour, with a guide explaining the timeline rules.
+* Asset folders that collect assets by tag rather than moving them.
+
+Credits
+
+* jamaaldev — plugin owner and maintainer.
+* ahsanulbarakah — contributor.
+
+Compatibility
+
+* Requires WordPress 6.6 or later.
+* Requires PHP 7.4 or later.
+* Tested against WordPress 7.1.

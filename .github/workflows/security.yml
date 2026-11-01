@@ -1,0 +1,120 @@
+name: Security and coding standards
+
+# A gate for the part of code review a machine can do reliably: whether output
+# is escaped, input sanitized, actions guarded by a nonce and a capability, SQL
+# prepared, silenced or discouraged WordPress functions avoided, globals
+# prefixed, and nothing newer than PHP 7.4 used while that is the declared
+# minimum.
+#
+# The ruleset lives in phpcs.xml.dist rather than in this file, so the same
+# findings appear in an editor and in CI. It is deliberately narrower than the
+# whole WordPress standard: the style half of that standard (statement
+# alignment, snake_case variables, file names matching class names) disagrees
+# with how this plugin is written throughout, and a gate that opens with a
+# hundred formatting notes stops being read. Run it locally with
+# `vendor/bin/phpcs` after installing the standards — no Composer file is
+# committed for that, so the command in the install step below is the recipe.
+#
+# Runs on every push and pull request. A pull request from a fork gets the same
+# ruleset; nothing in it needs a secret.
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+# One audit per ref at a time: a second push supersedes the first, and the
+# report that matters is the one for the newest commit.
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpcs:
+    name: PHPCS, WordPress security sniffs and PHP compatibility
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: cs2pr
+
+      # The standards are installed per run rather than committed: this
+      # repository ships no composer.json, and a lockfile for tools is a file to
+      # maintain for no shipped benefit. The download is cached, keyed on the
+      # ruleset, so changing what is checked also refreshes the tools.
+      - name: Cache Composer downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('phpcs.xml.dist') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install the coding standards
+        run: |
+          # This repository ships no composer.json: a manifest and a lockfile for
+          # tools would be two more files to keep current for nothing shipped.
+          # One is written here instead, with the installer plugin allowed to
+          # register each standard with PHPCS — so no `--config-set
+          # installed_paths` step is needed, and none is used, because a
+          # hard-coded path breaks the day a dependency moves.
+          cat > composer.json <<'JSON'
+          {
+            "name": "titlesparks/titlesparks",
+            "type": "wordpress-plugin",
+            "require-dev": {
+              "squizlabs/php_codesniffer": "^3.13",
+              "wp-coding-standards/wpcs": "^3.4",
+              "phpcompatibility/phpcompatibility-wp": "^2.1",
+              "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+            },
+            "config": {
+              "allow-plugins": {
+                "dealerdirect/phpcodesniffer-composer-installer": true
+              }
+            }
+          }
+          JSON
+
+          composer install --no-interaction --no-progress
+
+      - name: Show the standards PHPCS can see
+        run: ./vendor/bin/phpcs -i
+
+      - name: Security and compatibility ruleset
+        run: |
+          # The checkstyle report goes to a file rather than down a pipe: PHPCS
+          # prints its progress dots to the same stream as a report sent to
+          # stdout, and `cs2pr` reading those as XML fails with "Start tag
+          # expected". The exit status is carried by hand so the annotations
+          # still get uploaded before the job fails.
+          status=0
+          ./vendor/bin/phpcs --report=checkstyle --report-file=phpcs-checkstyle.xml || status=$?
+          cs2pr phpcs-checkstyle.xml || true
+
+          exit "$status"
+
+      - name: Note the versions in the job summary
+        if: always()
+        run: |
+          {
+            echo "| Tool | Version |"
+            echo "| --- | --- |"
+            echo "| PHP | $(php -r 'echo PHP_VERSION;') |"
+            echo "| PHP_CodeSniffer | $(./vendor/bin/phpcs --version 2>/dev/null || echo 'not installed') |"
+            echo "| WordPressCS | $(composer show wp-coding-standards/wpcs 2>/dev/null | sed -n 's/^versions *: *//p' | head -n1) |"
+            echo ""
+            echo 'Ruleset: `phpcs.xml.dist` — escaping, sanitizing, nonces and capabilities,'
+            echo 'prepared SQL, WordPress API use, prefixed globals, and PHP 7.4 compatibility.'
+          } >> "$GITHUB_STEP_SUMMARY"

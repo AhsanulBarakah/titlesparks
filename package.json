@@ -1,0 +1,107 @@
+{
+	"name": "titlesparks",
+	"version": "1.0.0",
+	"description": "Attach customizable animated GIFs, icons and images to post titles with a three stage expiration timeline.",
+	"author": "AhsanulBarakah",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"wordpress",
+		"plugin",
+		"news",
+		"title",
+		"gif",
+		"icon",
+		"expiry"
+	],
+	"homepage": "https://github.com/AhsanulBarakah/titlesparks#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AhsanulBarakah/titlesparks.git"
+	},
+	"bugs": {
+		"url": "https://github.com/AhsanulBarakah/titlesparks/issues"
+	},
+	"private": true,
+	"sideEffects": true,
+	"files": [
+		"build-admin",
+		"build-block",
+		"build-frontend",
+		"includes",
+		"assets",
+		"languages",
+		"titlesparks.php",
+		"uninstall.php",
+		"readme.txt",
+		"changelog.txt",
+		"LICENSE"
+	],
+	"scripts": {
+		"build": "npm run build-admin && npm run build-block && npm run build-frontend",
+		"build-admin": "cross-env WP_BUILD_TARGET=admin wp-scripts build",
+		"build-block": "cross-env WP_BUILD_TARGET=block wp-scripts build",
+		"build-frontend": "cross-env WP_BUILD_TARGET=frontend wp-scripts build",
+		"start": "concurrently --kill-others \"npm:start:admin\" \"npm:start:block\" \"npm:start:frontend\"",
+		"start:admin": "cross-env WP_BUILD_TARGET=admin wp-scripts start",
+		"start:block": "cross-env WP_BUILD_TARGET=block wp-scripts start",
+		"start:frontend": "cross-env WP_BUILD_TARGET=frontend wp-scripts start",
+		"test:unit": "wp-scripts test-unit-jest",
+		"lint:js": "wp-scripts lint-js blocks",
+		"lint:style": "wp-scripts lint-style blocks/**/*.{css,scss}",
+		"format": "wp-scripts format blocks",
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"make-pot": "wp i18n make-pot . languages/titlesparks.pot --slug=titlesparks --domain=titlesparks --exclude=node_modules,build-admin,build-block,build-frontend,vendor",
+		"plugin-zip": "node bin/plugin-zip.js",
+		"packages-update": "wp-scripts packages-update"
+	},
+	"dependencies": {
+		"@wordpress/api-fetch": "^8.0.0",
+		"@wordpress/components": "^43.0.0",
+		"@wordpress/data": "^11.0.0",
+		"@wordpress/editor": "^16.0.0",
+		"@wordpress/element": "^10.0.0",
+		"@wordpress/i18n": "^7.0.0",
+		"@wordpress/notices": "^6.0.0",
+		"@wordpress/plugins": "^8.0.0",
+		"@wordpress/url": "^5.0.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4.3.3",
+		"@wordpress/babel-preset-default": "^10.0.0",
+		"@wordpress/scripts": "^37.0.0",
+		"@wordpress/stylelint-config": "^27.0.0",
+		"adm-zip": "^0.6.1",
+		"autoprefixer": "^10.6.1",
+		"concurrently": "^10.0.6",
+		"cross-env": "^10.1.0",
+		"cssnano": "^6.1.2",
+		"jest": "^30.5.2",
+		"jest-environment-jsdom": "^30.5.2",
+		"postcss": "^8.5.31",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"tailwindcss": "^4.3.3"
+	},
+	"browserslist": [
+		">0.25%",
+		"not dead",
+		"not op_mini all"
+	],
+	"overrides": {
+		"serialize-javascript": "^7.1.4",
+		"postcss-selector-parser": "^7.1.7",
+		"markdownlint-cli": {
+			"js-yaml": "^5.5.0",
+			"smol-toml": "^1.9.1"
+		},
+		"micromark-extension-math": {
+			"katex": "^0.19.1"
+		}
+	},
+	"engines": {
+		"node": ">=20",
+		"npm": ">=10"
+	},
+	"packageManager": "npm@12.2.1"
+}

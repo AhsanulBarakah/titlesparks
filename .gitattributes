@@ -1,0 +1,18 @@
+# Text files are stored and checked out with LF everywhere, whatever
+# `core.autocrlf` is set to on the machine. Without this a checkout on Windows
+# carries CRLF, and `npm run plugin-zip` then archives bytes that differ from the
+# ZIP CI builds from the same commit.
+* text=auto eol=lf
+
+# Files a line-ending conversion would corrupt, declared so no future rule can
+# reach them.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.zip binary
+*.ttf binary
+*.woff binary
+*.woff2 binary

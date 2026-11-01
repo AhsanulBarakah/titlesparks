@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"checkJs": false,
+		"jsx": "react-jsx",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"paths": {
+			"@titlesparks/shared/*": [ "blocks/shared/*" ],
+			"@titlesparks/shared": [ "blocks/shared/index.js" ]
+		},
+		"target": "esnext"
+	},
+	"exclude": [ "build-admin", "build-block", "build-frontend", "node_modules", "vendor" ],
+	"include": [ "blocks/**/*.js" ]
+}

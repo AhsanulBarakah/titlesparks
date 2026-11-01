@@ -1,0 +1,136 @@
+/*
+ * The settings screen's placeholder.
+ *
+ * The dashboard is a React app, so the page shows a skeleton in its shape
+ * until the bundle mounts and replaces it. This stylesheet is enqueued on that
+ * screen only, so the structure paints with the page instead of a line of text,
+ * and it survives the bundle failing to load.
+ *
+ * It is plain CSS rather than Tailwind utilities so it renders even when the
+ * compiled stylesheet is missing or still downloading. Every class is
+ * namespaced, because wp-admin is shared.
+ */
+
+.titlesparks-skeleton {
+	width: 100%;
+	max-width: 72rem;
+	margin-inline: auto;
+}
+.titlesparks-skeleton__bar,
+.titlesparks-skeleton__card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	/* The dashboard's own radius scale: 12px for a surface, 8px for a
+	   control. Matching it here is what stops the page visibly
+	   re-rounding itself the moment the app mounts. */
+	border-radius: 12px;
+}
+.titlesparks-skeleton__bar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 16px;
+	margin-bottom: 20px;
+}
+.titlesparks-skeleton__columns {
+	display: grid;
+	gap: 20px;
+}
+.titlesparks-skeleton__column {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+/* The same breakpoints the app lays its own columns out at. */
+@media (min-width: 1024px) {
+	.titlesparks-skeleton__columns {
+		grid-template-columns: 2fr 1fr;
+	}
+}
+.titlesparks-skeleton__card {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 20px;
+}
+.titlesparks-skeleton__thumbs {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 12px;
+	margin-top: 4px;
+}
+@media (min-width: 640px) {
+	.titlesparks-skeleton__thumbs {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+@media (min-width: 1024px) {
+	.titlesparks-skeleton__thumbs {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+.titlesparks-skeleton__fields {
+	display: grid;
+	gap: 12px;
+	margin-top: 4px;
+}
+.titlesparks-skeleton__dot,
+.titlesparks-skeleton__pill,
+.titlesparks-skeleton__thumb,
+.titlesparks-skeleton__field {
+	background-color: #f0f0f1;
+	border-radius: 8px;
+	animation: titlesparks-skeleton-pulse 1.4s ease-in-out infinite;
+}
+.titlesparks-skeleton__dot {
+	flex: none;
+	width: 36px;
+	height: 36px;
+}
+.titlesparks-skeleton__pill {
+	display: block;
+	height: 12px;
+}
+.titlesparks-skeleton__pill--title {
+	width: 112px;
+	height: 16px;
+}
+.titlesparks-skeleton__pill--tab {
+	width: 84px;
+	height: 34px;
+}
+.titlesparks-skeleton__pill--button {
+	width: 76px;
+	height: 32px;
+	margin-left: auto;
+}
+.titlesparks-skeleton__pill--heading {
+	width: 40%;
+	height: 16px;
+}
+.titlesparks-skeleton__pill--text {
+	width: 65%;
+}
+.titlesparks-skeleton__thumb {
+	height: 104px;
+}
+.titlesparks-skeleton__field {
+	height: 36px;
+}
+@keyframes titlesparks-skeleton-pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.55;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.titlesparks-skeleton__dot,
+	.titlesparks-skeleton__pill,
+	.titlesparks-skeleton__thumb,
+	.titlesparks-skeleton__field {
+		animation: none;
+	}
+}
